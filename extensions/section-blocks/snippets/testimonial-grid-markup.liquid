@@ -1,0 +1,48 @@
+{%- liquid
+  assign vis_class = ''
+  if block.settings.show_on == 'desktop'
+    assign vis_class = ' sa-show-desktop'
+  elsif block.settings.show_on == 'mobile'
+    assign vis_class = ' sa-show-mobile'
+  endif
+-%}
+
+<section
+  class="sa-section{{ vis_class }}"
+  style="--sa-bg: {{ block.settings.bg }}; --sa-pad-y: {{ block.settings.pad_y }}px;"
+>
+  <div class="sa-container">
+    {%- if block.settings.heading != blank -%}
+      <h2 class="sa-section-title">{{ block.settings.heading | escape }}</h2>
+    {%- endif -%}
+    <div class="sa-testimonials-grid sa-testimonials-grid--{{ block.settings.variant }}">
+      {%- if block.settings.quote_1 != blank -%}
+        <article class="sa-testimonial-card">
+          <div class="sa-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="sa-quote">“{{ block.settings.quote_1 | escape }}”</p>
+          {%- if block.settings.author_1 != blank -%}
+            <span class="sa-author">— {{ block.settings.author_1 | escape }}</span>
+          {%- endif -%}
+        </article>
+      {%- endif -%}
+      {%- if block.settings.quote_2 != blank -%}
+        <article class="sa-testimonial-card">
+          <div class="sa-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="sa-quote">“{{ block.settings.quote_2 | escape }}”</p>
+          {%- if block.settings.author_2 != blank -%}
+            <span class="sa-author">— {{ block.settings.author_2 | escape }}</span>
+          {%- endif -%}
+        </article>
+      {%- endif -%}
+      {%- if block.settings.quote_3 != blank -%}
+        <article class="sa-testimonial-card">
+          <div class="sa-stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p class="sa-quote">“{{ block.settings.quote_3 | escape }}”</p>
+          {%- if block.settings.author_3 != blank -%}
+            <span class="sa-author">— {{ block.settings.author_3 | escape }}</span>
+          {%- endif -%}
+        </article>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

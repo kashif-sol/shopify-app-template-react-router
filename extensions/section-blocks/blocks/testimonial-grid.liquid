@@ -1,0 +1,97 @@
+{%- assign ent = app.metafields.section_app.entitlements.value -%}
+{%- assign tier = 'pro' -%}
+{%- if tier == 'free' or ent.all == true or ent.sections contains 'testimonial-grid' -%}
+  {%- render 'testimonial-grid-markup', block: block -%}
+{%- elsif request.design_mode -%}
+  <div class="sa-locked">🔒 Unlock “Testimonial Grid” in Section App</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Testimonial Grid",
+  "target": "section",
+  "stylesheet": "section-app.css",
+  "javascript": "section-app.js",
+  "settings": [
+    {
+      "type": "select",
+      "id": "variant",
+      "label": "Layout",
+      "options": [
+        { "value": "grid", "label": "3-column grid" },
+        { "value": "featured", "label": "2-column featured" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by customers"
+    },
+    {
+      "type": "textarea",
+      "id": "quote_1",
+      "label": "Quote 1",
+      "default": "The quality exceeded our expectations and shipping was super fast."
+    },
+    {
+      "type": "text",
+      "id": "author_1",
+      "label": "Author 1",
+      "default": "Sarah M."
+    },
+    {
+      "type": "textarea",
+      "id": "quote_2",
+      "label": "Quote 2",
+      "default": "We use it every day. Worth every penny and great support."
+    },
+    {
+      "type": "text",
+      "id": "author_2",
+      "label": "Author 2",
+      "default": "Daniel K."
+    },
+    {
+      "type": "textarea",
+      "id": "quote_3",
+      "label": "Quote 3",
+      "default": "Clean design, easy setup, and our conversion rate jumped immediately."
+    },
+    {
+      "type": "text",
+      "id": "author_3",
+      "label": "Author 3",
+      "default": "Elena R."
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background",
+      "default": "#f9fafb"
+    },
+    {
+      "type": "range",
+      "id": "pad_y",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "show_on",
+      "label": "Show on",
+      "options": [
+        { "value": "all", "label": "All" },
+        { "value": "desktop", "label": "Desktop only" },
+        { "value": "mobile", "label": "Mobile only" }
+      ],
+      "default": "all"
+    }
+  ]
+}
+{% endschema %}

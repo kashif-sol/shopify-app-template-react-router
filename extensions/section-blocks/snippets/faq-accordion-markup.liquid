@@ -1,0 +1,43 @@
+{%- liquid
+  assign vis_class = ''
+  if block.settings.show_on == 'desktop'
+    assign vis_class = ' sa-show-desktop'
+  elsif block.settings.show_on == 'mobile'
+    assign vis_class = ' sa-show-mobile'
+  endif
+-%}
+
+<section
+  class="sa-section{{ vis_class }}"
+  style="--sa-bg: {{ block.settings.bg }}; --sa-pad-y: {{ block.settings.pad_y }}px;"
+>
+  <div class="sa-container">
+    {%- if block.settings.heading != blank -%}
+      <h2 class="sa-section-title">{{ block.settings.heading | escape }}</h2>
+    {%- endif -%}
+    <div class="sa-faq-list sa-faq-list--{{ block.settings.variant }}">
+      {%- for i in (1..4) -%}
+        {%- assign q_key = 'q_' | append: i -%}
+        {%- assign a_key = 'a_' | append: i -%}
+        {%- assign q = block.settings[q_key] -%}
+        {%- assign a = block.settings[a_key] -%}
+        {%- if q != blank and a != blank -%}
+          <div class="sa-faq-item">
+            <button
+              type="button"
+              class="sa-faq-trigger"
+              data-sa-faq-toggle
+              aria-expanded="{% if i == 1 %}true{% else %}false{% endif %}"
+            >
+              <span>{{ q | escape }}</span>
+              <span data-sa-faq-icon>{% if i == 1 %}−{% else %}+{% endif %}</span>
+            </button>
+            <div class="sa-faq-answer"{% unless i == 1 %} hidden{% endunless %}>
+              {{ a | escape }}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>

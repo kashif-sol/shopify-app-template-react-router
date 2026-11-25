@@ -9,26 +9,105 @@ generator client {
 // enough when changing adapters.
 // See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
 datasource db {
-  provider = "sqlite"
-  url      = "file:dev.sqlite"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Session {
-  id            String    @id
-  shop          String
-  state         String
-  isOnline      Boolean   @default(false)
-  scope         String?
-  expires       DateTime?
-  accessToken   String
-  userId        BigInt?
-  firstName     String?
-  lastName      String?
-  email         String?
-  accountOwner  Boolean   @default(false)
-  locale        String?
-  collaborator  Boolean?  @default(false)
-  emailVerified Boolean?  @default(false)
+  id                  String    @id
+  shop                String
+  state               String
+  isOnline            Boolean   @default(false)
+  scope               String?
+  expires             DateTime?
+  accessToken         String
+  userId              BigInt?
+  firstName           String?
+  lastName            String?
+  email               String?
+  accountOwner        Boolean   @default(false)
+  locale              String?
+  collaborator        Boolean?  @default(false)
+  emailVerified       Boolean?  @default(false)
   refreshToken        String?
   refreshTokenExpires DateTime?
+}
+
+model Shop {
+  id        String   @id @default(cuid())
+  domain    String   @unique
+  plan      Plan     @default(FREE)
+  createdAt DateTime @default(now())
+  unlocks   Unlock[]
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  sort     Int       @default(0)
+  sections Section[]
+}
+
+model Section {
+  id         String   @id @default(cuid())
+  handle     String   @unique // = blocks/<handle>.liquid
+  name       String
+  description String? @db.Text
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  tier       Tier     @default(FREE)
+  priceCents Int      @default(0)
+  status     Status   @default(DRAFT)
+  sort       Int      @default(0)
+  demoUrl    String?
+  previews   Json?
+  unlocks    Unlock[]
+}
+
+enum Tier {
+  FREE
+  PRO
+}
+
+enum Status {
+  DRAFT
+  PUBLISHED
+}
+
+model Unlock {
+  id        String       @id @default(cuid())
+  shopId    String
+  sectionId String
+  source    UnlockSource // PURCHASE | MANUAL
+  chargeId  String?
+  shop      Shop         @relation(fields: [shopId], references: [id])
+  section   Section      @relation(fields: [sectionId], references: [id])
+
+  @@unique([shopId, sectionId])
+}
+
+enum UnlockSource {
+  PURCHASE
+  MANUAL
+}
+
+model Event {
+  id        String    @id @default(cuid())
+  shopId    String
+  sectionId String
+  type      EventType // VIEW | UNLOCK | ADD
+  createdAt DateTime  @default(now())
+
+  @@index([sectionId, type])
+}
+
+enum EventType {
+  VIEW
+  UNLOCK
+  ADD
 }

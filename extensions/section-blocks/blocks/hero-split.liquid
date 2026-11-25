@@ -1,0 +1,83 @@
+{%- assign ent = app.metafields.section_app.entitlements.value -%}
+{%- assign tier = 'free' -%}
+{%- if tier == 'free' or ent.all == true or ent.sections contains 'hero-split' -%}
+  {%- render 'hero-split-markup', block: block -%}
+{%- elsif request.design_mode -%}
+  <div class="sa-locked">🔒 Unlock “Hero Split” in Section App</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Hero Split",
+  "target": "section",
+  "stylesheet": "section-app.css",
+  "javascript": "section-app.js",
+  "settings": [
+    {
+      "type": "select",
+      "id": "variant",
+      "label": "Layout",
+      "options": [
+        { "value": "a", "label": "Image left" },
+        { "value": "b", "label": "Image right" }
+      ],
+      "default": "a"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Elevate your storefront"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Drop high-converting sections into any theme in seconds."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "color",
+      "id": "bg",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "pad_y",
+      "label": "Vertical padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "show_on",
+      "label": "Show on",
+      "options": [
+        { "value": "all", "label": "All" },
+        { "value": "desktop", "label": "Desktop only" },
+        { "value": "mobile", "label": "Mobile only" }
+      ],
+      "default": "all"
+    }
+  ]
+}
+{% endschema %}

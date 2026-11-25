@@ -1,0 +1,45 @@
+{%- liquid
+  assign vis_class = ''
+  if block.settings.show_on == 'desktop'
+    assign vis_class = ' sa-show-desktop'
+  elsif block.settings.show_on == 'mobile'
+    assign vis_class = ' sa-show-mobile'
+  endif
+-%}
+
+<section
+  class="sa-section{{ vis_class }}"
+  style="--sa-bg: {{ block.settings.bg }}; --sa-pad-y: {{ block.settings.pad_y }}px;"
+>
+  <div class="sa-container">
+    <div class="sa-hero-split sa-hero-split--{{ block.settings.variant }}">
+      <div class="sa-hero-media">
+        {%- if block.settings.image != blank -%}
+          {{
+            block.settings.image
+            | image_url: width: 1200
+            | image_tag: loading: 'lazy', class: 'sa-hero-img'
+          }}
+        {%- else -%}
+          <div class="sa-placeholder">Select an image in block settings</div>
+        {%- endif -%}
+      </div>
+      <div class="sa-hero-content">
+        {%- if block.settings.heading != blank -%}
+          <h2 class="sa-hero-heading">{{ block.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if block.settings.subheading != blank -%}
+          <p class="sa-hero-subheading">{{ block.settings.subheading | escape }}</p>
+        {%- endif -%}
+        {%- if block.settings.cta_label != blank -%}
+          <a
+            class="sa-btn"
+            href="{{ block.settings.cta_url | default: '#' }}"
+          >
+            {{ block.settings.cta_label | escape }}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
